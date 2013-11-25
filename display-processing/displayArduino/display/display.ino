@@ -9,12 +9,23 @@ int heatTrans = 9;
 float tempLimit;
 float prevTempLimit;
 
+// SLIDER AND LIGHT SENSOR
+int val_light = 0;
+int val_slider = 5;
+int ledStrip = 9;
+int slideVal = 0;
+int inputPin0 = 0; // Analog pin 0 - for light sensor
+int brightness = map(val_light, 20, 1024, 255, 0);
+
 char bits[3];
+
 
 void setup() {
   Serial.begin(9600); 
   pinMode(13, OUTPUT); 
- pinMode(12, OUTPUT);
+  pinMode(12, OUTPUT);
+  
+  ledStrip(9, OUTPUT);
  
   dht.begin();
   
@@ -46,14 +57,23 @@ void loop() {
     Serial.print("dht");
     
     // DONE SENDING INFORMATION
-    Serial.print("&");
-    
+    Serial.print("&");  
   }
+  
+  
+  
+  
+  // SLIDER SENSOR AND LIGHT SENSOR STUFF ===============
+  
+  
+  
+  
+  
   
   /*
     Need to find out from Processing what desired temperature is
    */  
-   
+   /*
    if(Serial.available() > 0){
 //
 //    digitalWrite(12, HIGH);
@@ -81,7 +101,7 @@ void loop() {
       }
     } 
    }
-   
+   */
    
   
 }

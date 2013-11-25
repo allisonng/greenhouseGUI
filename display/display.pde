@@ -29,6 +29,10 @@ boolean decreaseTempCheck = false;
 int upX, upY, tempDownX, tempDownY;
 int moistUpX, moistUpY, moistDownX, moistDownY;
 
+// LIGHT SENSOR
+int val_light;
+int val_slider;
+
 // Positioning
 int numbBoxWidth = 48;
 int numbBoxHeight = 48;
@@ -59,6 +63,10 @@ void setup(){
   
   numbBoxWidth = 48;
   numbBoxHeight = 48;
+  
+  // LIGHT SENSOR
+//   font = loadFont("Calibri-24.vlw");
+
 }
 
 
@@ -105,9 +113,11 @@ void draw(){
       // dhtSensor[2] is temperature
       currentTemp = Float.valueOf(dhtSensor[2]).floatValue(); 
       currentMoist = Float.valueOf(dhtSensor[1]).floatValue();
-
-    } 
+      
+    // LIGHT SENSOR
     
+      
+    }     
   }
   else{
      desiredTemp = 0; 
@@ -135,6 +145,8 @@ void draw(){
     Desired Moisture Level
     Desired/Current Temperature
    */
+  // CURRENT MOISTURE LEVEL ================================
+
 
     
   // CURRENT MOISTURE LEVEL ================================
@@ -323,6 +335,7 @@ void update(int mousex, int mousey){
     isOnTempUpArrow = false;
     isOnTempDownArrow = false;
     isOnMoistUpArrow = false;
+    isOnMoistDownArrow = false;
   }
 //  else if(overTempDownArrow(mousex, mousey)){
 
@@ -379,7 +392,7 @@ boolean overTempDownArrow(int mousex, int mousey){
 
 boolean overMoistUpArrow(int mousex, int mousey){
  if((moistUpX <= mousex && mousex <= moistUpX + moistUpArrow.width) && (moistUpY <= mousey && mousey <= moistUpY+moistUpArrow.height)){
-   println("inside moistup arrow");
+//   println("inside moistup arrow");
    return true;
  } else{
    return false;
@@ -388,7 +401,7 @@ boolean overMoistUpArrow(int mousex, int mousey){
 
 boolean overMoistDownArrow(int mousex, int mousey){
  if((moistDownX <= mousex && mousex <= moistDownX + moistDownArrow.width) && (moistDownY <= mousey && mousey <= moistDownY + moistDownArrow.height)){
-   println("inside down arrow TRUE");
+//   println("inside down arrow TRUE");
    return true;  
  } else{
    return false;
