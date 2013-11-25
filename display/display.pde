@@ -54,7 +54,7 @@ void setup(){
   upArrow = loadImage("arrow_up.gif");
   downArrow = loadImage("arrow_down.gif"); 
   
-  prevDesiredTemp = 15;
+  prevDesiredTemp = 19;
   prevDesiredMoist = 28;
   
   numbBoxWidth = 48;
@@ -186,6 +186,15 @@ void draw(){
   stroke(0); 
   fill(0);
   
+  if(increaseMoistCheck){
+   desiredMoist = desiredMoist + 1;
+   increaseMoistCheck = false;
+  }
+  else if(decreaseMoistCheck){
+   desiredMoist = desiredMoist - 1;
+   decreaseMoistCheck = false; 
+  }
+  
   // format to 2 decimal places
   String desiredMoistStr = decFormat.format(desiredMoist);  
   prevDesiredMoist = desiredMoist;
@@ -302,11 +311,18 @@ void update(int mousex, int mousey){
     // println("isOnTempDOWNArrow");
     isOnTempDownArrow = true;
   }
+  else if(overMoistUpArrow(mousex, mousey)){
+    isOnMoistUpArrow = true; 
+  }
+  else if(overMoistDownArrow(mousex, mousey)){
+    isOnMoistDownArrow = true; 
+  }
   else{ 
 //    For some reason when program runs, 
 //    overTempUpArrow returns true, so this is needed. 
     isOnTempUpArrow = false;
     isOnTempDownArrow = false;
+    isOnMoistUpArrow = false;
   }
 //  else if(overTempDownArrow(mousex, mousey)){
 
@@ -324,6 +340,14 @@ void mousePressed(){
     decreaseTempCheck = true;
     isOnTempDownArrow = false;
   }
+  else if(isOnMoistUpArrow){
+    increaseMoistCheck = true;
+    isOnMoistUpArrow = false;
+  }
+  else if(isOnMoistDownArrow){
+    decreaseMoistCheck = true;
+    isOnMoistDownArrow = false; 
+  }
 }
 
 boolean overTempUpArrow(int mousex, int mousey){
@@ -334,7 +358,7 @@ boolean overTempUpArrow(int mousex, int mousey){
   if((upX <= mousex && mousex <= upX+upArrow.width) && (upY <= mousey && mousey <= upY+upArrow.height)){
   //if((100 <= mouseX && mouseX <= 200) && (100 <= mouseY && mouseY <= 200)){
      // mousePressedCheck = true;
-     // println("Inside UP, TRUE");
+     println("Inside UP, TRUE");
      return true;
   } else {
      // mousePressedCheck = false;
@@ -353,3 +377,20 @@ boolean overTempDownArrow(int mousex, int mousey){
   }
 }
 
+boolean overMoistUpArrow(int mousex, int mousey){
+ if((moistUpX <= mousex && mousex <= moistUpX + moistUpArrow.width) && (moistUpY <= mousey && mousey <= moistUpY+moistUpArrow.height)){
+   println("inside moistup arrow");
+   return true;
+ } else{
+   return false;
+  }
+} 
+
+boolean overMoistDownArrow(int mousex, int mousey){
+ if((moistDownX <= mousex && mousex <= moistDownX + moistDownArrow.width) && (moistDownY <= mousey && mousey <= moistDownY + moistDownArrow.height)){
+   println("inside down arrow TRUE");
+   return true;  
+ } else{
+   return false;
+ }
+}
