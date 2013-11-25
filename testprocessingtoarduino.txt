@@ -1,0 +1,59 @@
+
+
+import processing.serial.*;
+Serial myPort; 
+
+
+
+void setup(){
+  
+  myPort = new Serial(this, Serial.list()[0], 9600);
+  
+}
+
+
+void draw(){
+  
+  // Clear output channel
+  myPort.clear(); 
+
+  // 'H' for start of Heating Pad desired temp
+  myPort.write('H');  // Ascii for H
+  delay(500);
+  myPort.write(15);  
+  delay(500);
+  myPort.write('&');
+  delay(500);
+}
+
+
+
+
+
+void setup(){
+ pinMode(13, OUTPUT); 
+ Serial.begin(9600);
+}
+
+void loop(){
+  // 255 is max
+  
+  if(Serial.available() > 0){
+    byte incomingByte = Serial.read();
+    byte nextByte = Serial.read();
+    byte lastByte = Serial.read();
+    // nextByte = nextByte - '0';
+    
+    if(incomingByte == 'H'){
+      
+      if(nextByte == 15){
+        analogWrite(9, 255);
+        digitalWrite(13, LOW);
+      }
+    }
+    else if(lastByte == '&'){
+      digitalWrite(13, HIGH);  
+      analogWrite(9, 0);
+    }
+  }  
+}
