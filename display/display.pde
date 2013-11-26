@@ -1,6 +1,8 @@
 import processing.serial.*;
 import java.text.DecimalFormat;
 
+// upArrow and downArrow are for the desiredTemperature
+// Too scared to change it just in case I break anything.
 PImage upArrow, downArrow, moistUpArrow, moistDownArrow;
 PFont font;
 float x, y;
@@ -116,14 +118,7 @@ void draw(){
       // l for light sensor
       String[] lightSensorStr = splitTokens(bufferArray[0], "l");
       lightVal = int(lightSensorStr[1]);
-     if(lightVal >= 20){
-       // Sunshine is ON!
-      print("sunshine is on"); 
-     }
-     else{
-       // Sunshine is dark, LED IS ON
-      print("LED is on");       
-     }      
+    
       
     // LIGHT SENSOR
     
@@ -150,13 +145,37 @@ void draw(){
     
 
   // BRIGHTNESS LEVEL ================================
-//  int brightHeaderX = marginFromBox;
-//  int brightHeadery = 100
-
-    
+  int brightHeaderX = marginFromBox;
+  int brightHeaderY = 100;
+  text("Light Type", brightHeaderX, brightHeaderY);
+  
+  // This will cover the previous value and replace with new one.
+  noStroke();
+  fill(255);
+  rect(brightHeaderX + 30, brightHeaderY + 10, 300, 20);
+  
+  String brightType = "";
+   fill(#FABC35);
+   
+   if(lightVal >= 20){
+     // Sunshine is ON!
+     brightType = "Using sunshine!";
+   }
+   else if(lightVal < 20){
+     // Sunshine is dark, LED IS ON
+     brightType = "Using LED strip + slider!";
+   } else{
+     brightType = "loading...";
+   }
+   text(brightType, brightHeaderX + 30, brightHeaderY +30);
+   
+  // If you don't put this, rectangles BEFORE will have weird greyed out border.
+  stroke(0); 
+  fill(0);
   // CURRENT MOISTURE LEVEL ================================
   int cMoistHeaderX = marginFromBox;
-  int cMoistHeaderY = 100;
+  int cMoistHeaderY = 100+60;
+ 
   text("Current Moisture", cMoistHeaderX, cMoistHeaderY);
   int cMoistRectX = cMoistHeaderX + 30;
   int cMoistRectY = cMoistHeaderY +5;
