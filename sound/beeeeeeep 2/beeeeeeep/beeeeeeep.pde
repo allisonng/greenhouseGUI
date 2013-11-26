@@ -17,16 +17,17 @@ void setup()
   //this loads soang.mp3 from the data folder
   
   
-  draw();
+//  draw();
 }
 
 void draw() {
-  if (humitLevel <= inputLevel && userKnows == false) {
+//  if (humitLevel <= inputLevel && userKnows == false) {
+  if(1 < 0){
 
      
       song.play();
 
-      song.pause();
+//      song.pause();
      
   }
 

@@ -1,5 +1,6 @@
 import processing.serial.*;
 import java.text.DecimalFormat;
+import ddf.minim.*;
 
 // upArrow and downArrow are for the desiredTemperature
 // Too scared to change it just in case I break anything.
@@ -34,11 +35,15 @@ int moistUpX, moistUpY, moistDownX, moistDownY;
 // LIGHT SENSOR
 int lightVal, sliderVal;
 
-// Positioning
+// Positioning for the boxes displaying numerical values
 int numbBoxWidth = 48;
 int numbBoxHeight = 48;
-int marginFromBox = 120;
+int marginFromBox = 120; // how far from the left
 
+// Audio for desired moisture drop notification
+AudioPlayer song;
+Minim minim;
+boolean userKnows = false; // User is aware of sound playing
 
 
 void setup(){
@@ -59,15 +64,17 @@ void setup(){
   upArrow = loadImage("arrow_up.gif");
   downArrow = loadImage("arrow_down.gif"); 
   
-  prevDesiredTemp = 19;
-  prevDesiredMoist = 28;
+  prevDesiredTemp = 20;
+  prevDesiredMoist = 25;
+  currentMoist = prevDesiredMoist;
   
   numbBoxWidth = 48;
   numbBoxHeight = 48;
   
-  // LIGHT SENSOR
-//   font = loadFont("Calibri-24.vlw");
-
+  // Audio for desired moisture notification
+  minim = new Minim(this);
+  song = minim.loadFile("beep-1.mp3");
+  
 }
 
 
@@ -119,10 +126,7 @@ void draw(){
       String[] lightSensorStr = splitTokens(bufferArray[0], "l");
       lightVal = int(lightSensorStr[1]);
     
-      
-    // LIGHT SENSOR
-    
-      
+     
     }     
   }
   else{
@@ -172,6 +176,7 @@ void draw(){
   // If you don't put this, rectangles BEFORE will have weird greyed out border.
   stroke(0); 
   fill(0);
+  
   // CURRENT MOISTURE LEVEL ================================
   int cMoistHeaderX = marginFromBox;
   int cMoistHeaderY = 100+60;
@@ -235,6 +240,35 @@ void draw(){
   String desiredMoistStr = decFormat.format(desiredMoist);  
   prevDesiredMoist = desiredMoist;
   text(desiredMoistStr, dMoistHeaderX + 45, dMoistHeaderY + 35);
+  
+  // NOTIFICATION if current moisture drops below desired moisture level;
+  delay(200);
+  String moistureWarning = "";
+ if((currentMoist < desiredMoist)){
+    println("currentmoist: " + currentMoist);
+    println("desiredMoist: " + desiredMoist);
+    song.play();
+   
+    moistureWarning = "!Moisture level has dropped!";
+  } 
+ else{
+    moistureWarning = "";
+    fill(0);
+    
+     // This will cover the warning
+    noStroke();
+    fill(255);
+    rect(dMoistHeaderX+100, dMoistHeaderY+3, 270,30);
+
+    song.pause();
+    song.rewind();
+ }
+   fill(255, 0, 0);
+   text(moistureWarning, dMoistHeaderX+100, dMoistHeaderY+20);
+   
+   stroke(0);
+   fill(0);
+ 
   
   
   // CURRENT TEMPERATURE ==================================== 
