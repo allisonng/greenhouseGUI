@@ -355,7 +355,7 @@ void draw(){
      text(currDesiredTempStr, dTempX+45, dTempY+35);
      
      // Send what temperature to turn off the heat pads at
-     byte bits[] = {'T', byte(desiredTemp), 'X', '&'};
+     byte bits[] = {'T', byte(desiredTemp), '&'};
      for(int i=0; i<bits.length; i++){
        port.write(bits[i]);    
      }

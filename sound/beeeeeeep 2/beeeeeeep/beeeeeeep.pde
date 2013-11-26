@@ -22,7 +22,7 @@ void setup()
 
 void draw() {
 //  if (humitLevel <= inputLevel && userKnows == false) {
-  if(1 < 0){
+  if(1 > 0){
 
      
       song.play();
