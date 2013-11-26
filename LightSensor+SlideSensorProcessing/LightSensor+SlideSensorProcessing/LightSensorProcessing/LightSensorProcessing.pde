@@ -16,9 +16,7 @@ void setup() {
  //font file has to be in the same folder as sketch (go Tools/ CreateFont/etc...)
  font = loadFont("Calibri-24.vlw");
    // Open the port that the board is connected to and use the same speed (9600 bps)
-// myPort = new Serial(this, "/dev/tty.usbmodem1421", 9600);
-  myPort=  new Serial(this, Serial.list()[0],9600);
-
+ myPort = new Serial(this, "/dev/tty.usbmodem1421", 9600);
 }
 
 void draw() {

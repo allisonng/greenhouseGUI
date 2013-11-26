@@ -5,27 +5,23 @@
 
 DHT dht(DHTPIN, DHTTYPE);
 
-int heatTrans = 9;
+int heatTrans = 10;
 float tempLimit;
 float prevTempLimit;
 
 // SLIDER AND LIGHT SENSOR
-int val_light = 0;
-int val_slider = 5;
-int ledStrip = 9;
-int slideVal = 0;
-int inputPin0 = 0; // Analog pin 0 - for light sensor
-int brightness = map(val_light, 20, 1024, 255, 0);
+int sliderSensor = 5;
+int lightSensor = 0;
+int ledPin = 9; // the transistor for LED strip
 
+// For turning off the heat
 char bits[3];
 
 
 void setup() {
   Serial.begin(9600); 
-  pinMode(13, OUTPUT); 
-  pinMode(12, OUTPUT);
-  
-  ledStrip(9, OUTPUT);
+ 
+  pinMode(9, OUTPUT);
  
   dht.begin();
   
@@ -35,13 +31,10 @@ void setup() {
 }
 
 void loop() {
-  // Reading temperature or humidity takes about 250 milliseconds!
-  // Sensor readings may also be up to 2 seconds 'old' (its a very slow sensor)
   float hum = dht.readHumidity();
   float currTemp = dht.readTemperature();
-  
+ 
   tempLimit = prevTempLimit;
-  
   
   Serial.println(" ");
   // Make sure h and t read are numbers, NaN = not a number
@@ -55,21 +48,29 @@ void loop() {
     Serial.print("dht");
     Serial.print(currTemp);
     Serial.print("dht");
-    
-    // DONE SENDING INFORMATION
-    Serial.print("&");  
   }
   
+  // LIGHT AND SLIDER INFORMATION
+  int sliderVal = analogRead(sliderSensor);
+  int lightVal = analogRead(lightSensor)/6; // 6 instead of 4 stabilizes light
+
+  // the lowest the slider sensor can go is ~23, not 0 to turn off
+  int min = 20;
+  int sliderMap = map(sliderVal, min, 1024, 0, 255);
+    
+  if(lightVal <= min){
+    analogWrite(ledPin, sliderMap); 
+  } else{
+    analogWrite(ledPin, 0);
+  }
   
+  Serial.print("l"); // l for light sensor
+  Serial.print(lightVal);
+  Serial.print("l");  
   
-  
-  // SLIDER SENSOR AND LIGHT SENSOR STUFF ===============
-  
-  
-  
-  
-  
-  
+  // DONE SENDING INFO, SEND '&'
+  Serial.print("&");  
+
   /*
     Need to find out from Processing what desired temperature is
    */  

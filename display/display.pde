@@ -30,8 +30,7 @@ int upX, upY, tempDownX, tempDownY;
 int moistUpX, moistUpY, moistDownX, moistDownY;
 
 // LIGHT SENSOR
-int val_light;
-int val_slider;
+int lightVal, sliderVal;
 
 // Positioning
 int numbBoxWidth = 48;
@@ -114,6 +113,18 @@ void draw(){
       currentTemp = Float.valueOf(dhtSensor[2]).floatValue(); 
       currentMoist = Float.valueOf(dhtSensor[1]).floatValue();
       
+      // l for light sensor
+      String[] lightSensorStr = splitTokens(bufferArray[0], "l");
+      lightVal = int(lightSensorStr[1]);
+     if(lightVal >= 20){
+       // Sunshine is ON!
+      print("sunshine is on"); 
+     }
+     else{
+       // Sunshine is dark, LED IS ON
+      print("LED is on");       
+     }      
+      
     // LIGHT SENSOR
     
       
@@ -137,16 +148,10 @@ void draw(){
   
   update(mouseX, mouseY);
     
-    
-  /*
-    Light (volume-like scale)
-    Light Timer
-    Current Moisture Level
-    Desired Moisture Level
-    Desired/Current Temperature
-   */
-  // CURRENT MOISTURE LEVEL ================================
 
+  // BRIGHTNESS LEVEL ================================
+//  int brightHeaderX = marginFromBox;
+//  int brightHeadery = 100
 
     
   // CURRENT MOISTURE LEVEL ================================
@@ -370,29 +375,23 @@ boolean overTempUpArrow(int mousex, int mousey){
   // arrow size is 20x26
   if((upX <= mousex && mousex <= upX+upArrow.width) && (upY <= mousey && mousey <= upY+upArrow.height)){
   //if((100 <= mouseX && mouseX <= 200) && (100 <= mouseY && mouseY <= 200)){
-     // mousePressedCheck = true;
-     println("Inside UP, TRUE");
+
      return true;
   } else {
-     // mousePressedCheck = false;
-//     ln("Not inside UP, false");
      return false;
   }    
 }
 
 boolean overTempDownArrow(int mousex, int mousey){
   if((tempDownX <= mousex && mousex <= tempDownX+downArrow.width) && (tempDownY <= mousey && mousey <= tempDownY+downArrow.height)){
-    // println("Inside DOWN, TRUE");
     return true;
   } else{
-//    println("Not inside DOWN, false");
     return false;
   }
 }
 
 boolean overMoistUpArrow(int mousex, int mousey){
  if((moistUpX <= mousex && mousex <= moistUpX + moistUpArrow.width) && (moistUpY <= mousey && mousey <= moistUpY+moistUpArrow.height)){
-//   println("inside moistup arrow");
    return true;
  } else{
    return false;

@@ -60,6 +60,6 @@ void loop() {
 
  Serial.println();
 
-
+ delay(300);
 }
 

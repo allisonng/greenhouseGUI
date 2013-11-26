@@ -23,7 +23,8 @@ void draw(){
     if(userKnowsMoist == false){
 //      song.play();
 //    song.pause();
-      song.loop();
+      song.play();
+
       
     }
   } 
